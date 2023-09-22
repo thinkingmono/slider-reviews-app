@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { longList } from '../data';
 import { FaChevronLeft, FaChevronRight } from '../../node_modules/react-icons/fa';
 import Slide from './Slide';
@@ -19,16 +19,26 @@ const Carousel = () => {
         // console.log(slideIndex);
     }
 
+    /*AUTOPLAY*/
+    useEffect(() => {
+        let sliderId = setInterval(() => {
+            nextSlide();
+        }, 3000)
+        return () => {
+            clearInterval(sliderId);
+        }
+    }, [currentSlide])
+
     return (
         <>
-            <div className='slider-container'>
+            <section className='slider-container'>
                 <button type="button" className='prev' onClick={prevSlide}><FaChevronLeft /></button>
                 {personList ? personList.map((person, index) => {
                     const { id } = person;
                     return <Slide {...person} key={id} currentSlide={currentSlide} index={index} />
                 }) : null}
                 <button type="button" className='next' onClick={nextSlide}><FaChevronRight /></button>
-            </div>
+            </section>
         </>
     )
 }
